@@ -1,0 +1,17 @@
+{
+    "name": "Demo",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Demo app",
+    "keywords": [
+        "myapp"
+    ],
+    "dependencies": {
+        "blob-util": "^2.0.2",
+        "file-type": "^18.0.0",
+        "node-fetch": "^3.2.10",
+        "oracledb": "^5.1.0"
+    },
+    "author": "You",
+    "license": "MIT"
+}
