@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const blobUtil = require("blob-util");
 
 var imageData = fs.readFileSync("./profile.jpg");
-var test = imageData.buffer();
+var test = imageData;
 console.log(test);
 //console.log(typeof imageData);
 
