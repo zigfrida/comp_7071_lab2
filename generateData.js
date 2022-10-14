@@ -37,7 +37,7 @@ const randomBirthDate = () => {
     );
 };
 
-const generateCustomers = () => {
+export const generateCustomers = () => {
     for (let i = 1; i <= 3; i++) {
         // uuid, name, street, city, photo, gender
         const uuid = crypto.randomBytes(8).toString("hex");
@@ -55,7 +55,7 @@ const generateCustomers = () => {
     console.log(customers);
 };
 
-const generateEmployees = () => {
+export const generateEmployees = () => {
     for (let i = 1; i <= 15; i++) {
         // uuid, name, street, city, photo, gender
         const uuid = crypto.randomBytes(8).toString("hex");
@@ -75,7 +75,7 @@ const generateEmployees = () => {
     console.log(employees);
 };
 
-const generateServiceType = () => {
+export const generateServiceType = () => {
     let uuid = crypto.randomBytes(8).toString("hex");
     let service1 = [uuid, "Cleaning", "SLF", 70];
     serviceTypes.push(service1);
@@ -91,7 +91,7 @@ const generateServiceType = () => {
     //console.log(serviceTypes);
 };
 
-const generateCustomerService = () => {
+export const generateCustomerService = () => {
     for (let i = 0; i <= 100; i++) {
         var customer = customers[Math.floor(Math.random() * customers.length)];
         var service =
@@ -102,7 +102,7 @@ const generateCustomerService = () => {
     console.log(customerServices);
 };
 
-const randomDate = () => {
+export const randomDate = () => {
     let startDate = new Date(2022, 0, 1);
     let endDate = new Date();
     return new Date(
@@ -111,7 +111,7 @@ const randomDate = () => {
     );
 };
 
-const generateCustomerServiceSchedule = () => {
+export const generateCustomerServiceSchedule = () => {
     for (let i = 0; i < customerServices.length; i + 2) {
         let employee = employees[Math.floor(Math.random() * employees.length)];
         let custService = customerServices[i];
