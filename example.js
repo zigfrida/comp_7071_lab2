@@ -134,21 +134,35 @@ async function testACID() {
             connectionString: "Y6AQMDWOEPZ559SA_high",
         });
 
-        const result_1 =
-            await connection.execute(`SELECT c.id, c.name, c.birthdate 
-                                               FROM customer c
-                                               JOIN CustomerServiceSchedule css ON c.id = css.customerID
-                                               JOIN employee e ON e.id = css.employeeID
-                                               WHERE e.name = 'Emp 1'`);
+        const transaction_1 =
+            connection.execute(`SELECT c.name Customer, st.name Service, ROUND(SUM(st.rate * (css.actualduration/60)),2) Revenue
+                                                    FROM customerserviceschedule css
+                                                    JOIN customerservice cs ON css.customerid = cs.customerid AND css.servicetypeid = cs.servicetypeid
+                                                    JOIN servicetype st ON st.id = cs.servicetypeid
+                                                    JOIN customer c ON c.id = css.customerid
+                                                    WHERE css.startdatetime BETWEEN ADD_MONTHS(TRUNC(SYSDATE, 'mm'),-6) AND LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE, 'mm'),-1)) AND css.status = 'Completed'
+                                                    GROUP BY c.name, st.name;
+                                            `);
+        console.dir(transaction_1.rows, { depth: null });
 
-        const explain = await connection.execute(`EXPLAIN PLAN FOR
-                                                  SELECT *
-                                                  FROM employee
-                                                  WHERE name LIKE 'Emp 1'`);
+        const transaction_2 = connection.execute(`UPDATE servicetype
+                                    SET rate=90
+                                    WHERE name LIKE 'Doctor'`);
+        console.dir(transaction_2.rows, { depth: null });
 
-        console.dir(result_1.rows, { depth: null });
+        setTimeout(5000); // Test commenting it out
 
-        console.dir(explain.rows, { depth: null });
+        const transaction_3 =
+            connection.execute(`SELECT c.name Customer, st.name Service, ROUND(SUM(st.rate * (css.actualduration/60)),2) Revenue
+                                                    FROM customerserviceschedule css
+                                                    JOIN customerservice cs ON css.customerid = cs.customerid AND css.servicetypeid = cs.servicetypeid
+                                                    JOIN servicetype st ON st.id = cs.servicetypeid
+                                                    JOIN customer c ON c.id = css.customerid
+                                                    WHERE css.startdatetime BETWEEN ADD_MONTHS(TRUNC(SYSDATE, 'mm'),-6) AND LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE, 'mm'),-1)) AND css.status = 'Completed'
+                                                    GROUP BY c.name, st.name;
+                                                 `);
+
+        console.dir(transaction_3.rows, { depth: null });
     } catch (err) {
         console.error(err);
     } finally {
